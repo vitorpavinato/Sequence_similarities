@@ -3,7 +3,7 @@ title: "lab1_blast"
 Date:
 bibliography: [citations.bib]
 csl: [chicago.csl]
-...
+---
 # __Lab 1: Web-based and standalone BLAST__
 
 ## __How to use this material:__

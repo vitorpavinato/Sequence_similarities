@@ -1,9 +1,3 @@
----
-title: "lab1_blast"
-Date:
-bibliography: [citations.bib]
-csl: [chicago.csl]
----
 # __Lab 1: Web-based and standalone BLAST__
 
 ## __How to use this material:__
@@ -51,7 +45,7 @@ The folder contains the following subfolders:
 ```
 In lab you find this README.md file with all instructions we are going to follow in this class. Lecture will have the material for the class on January, 27th 2022. 
 
-lab/data contains the files with the sequences were are going use to find similarities with sequences available in the NCBI database.
+lab/data contains the files with the sequences we are going use to find similarities with sequences available in the NCBI database.
 
 ## __Installation of the standalone BLAST__ 
 
@@ -78,7 +72,7 @@ OR
 
 __For Mac:__
 
-First install Homebrew in your machine. Homebrew emulates the capabilities of a software package management found in Linux machines.
+First install Homebrew in your machine. Homebrew emulates the capabilities of a software package management found in Linux machines:
 ```dotnetcli
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 ```
@@ -91,7 +85,7 @@ __For Linux:__
 sudo apt-get install ncbi-blast+
 ```
 
-### __Sequence similarity search with Web-based BLAST__
+### __Sneak peek__
 
 We are going to start this tutorial by using the web-based version of BLAST to find similar sequences. Similarity search is the first step on homology and functional prediction. In this tutorial we are not focus on the details behind the BLAST implementation (algorithm and theory). Instead, we are going to focus on how interpret the search output. From there, we can try to develop some intuition that will help us understand the technicalities behind the algorithm and implementation.
 
@@ -118,7 +112,7 @@ When you have successfully completed this activity, you should be able to:
 - Find accession and GI numbers that reference a particular sequence
 
 
-## __Background__
+## __Background:__
 The purpose of this exercise is to get familiar with the Basic Local Alignment Search Tool  (BLAST).  BLAST finds regions of local similarity between sequences. The program compares a query sequence (a protein or nucleotide sequence) against a sequence database and calculates significance of matches.  BLAST divides the query sequence into shorter words and initially looks for matches of these words only. The tool gives a score based on a scoring system e.g. in blastn, it will give +1 for each match and -2 for each mismatch. 
 
 _Task_ - Before beginning the tasks of the activity, please review several videos below to review the BLAST tool. 
@@ -139,7 +133,7 @@ To further your understanding of BLAST returns, watch [this](https://youtu.be/dz
 - How might you determine an e-value cutoff? 
 - What is meant by a reported e-value of 0.0? 
 
-## __Part A: Using BLAST to search for closely related organisms:__
+## __Part A: Using BLAST to search for closely related organisms__
 
 This exercise demonstrates the different kinds of results you get when you search sequence databases with different algorithms using either a DNA or protein sequence from the same gene.
 
@@ -162,8 +156,76 @@ The length of the sequence on each line doesn’t matter.
 Spaces and non-sequence characters are not allowed within the sequence.
 FASTA formatted sequences use single line spacing.
 
-4. Save as `celegans_sod.fasta` in the data/ folder.
+4. Save as `celegans_sod.fasta` in the data/ folder (a file containing this sequence can be found at `lab/data`).
 
-A file containing this sequence can be found at `introBlast/lab/data`.
+_Task_ - Run a BLASTN search using the NR (Non redundant database) using the sequence associated with NM_001026785.1 as follows:
+
+5. Go to the BLAST homepage and select Nucleotide Blast.
+
+6. Enter the query sequence: Paste the FASTA formatted sequence you formatted above into the search box. Be sure that the FASTA formatting rules are maintained. In some cases the header line will wrap around to the second line. In that case, delete the second header line, so that the sequence starts on the second line.
+
+7. Select the database and blast program: The default should be Standard Databases and “Nucleotide collection (nr/nt)” in the Database pull-down menu.Under “Program Selection”, select “megablast”. Parameters can be selected by looking under “Algorithm Parameters”. Set the “Max Target Sequences” to 500 under “Algorithm Parameters”.
+
+8. Click BLAST and wait for the results, look at the results and paste a screenshot below.
+
+9. Interpreting taxonomy report
+    
+    - Click on the “Taxonomy report” link in your BLAST header report. List the taxonomic groups below that have homologs. Remember to check that the E-value is significant before considering a “hit” to be a homolog.
+    - Repeat the search, except under “Program Selection”, select “blastn” (you chose (megablast) on the prior search)
+    - List below the major taxonomic groups with homologs (be sure that the E-value is significant).
+    - Were there any homologs in any plant species? Support your answer with E-values.
+    - How and why are the results different from the first blast (megablast)?
+
+## __Part B: Picking the best match for your query sequence__
+
+This set of questions demonstrates the different matches you get when you run a BLAST search and how to pick the best matches for your search.
+
+The FASTA sequence for this part of your problem set is given in the file `data/seq_partb.fasta`.
+
+1. Go to BLAST and select nucleotide blast and paste the FASTA sequence `data/seq_partb.fasta` in the “Query Sequence Box”. Choose “Standard databases/nucleotide collection” for database, under “Choose search set”. Since the rest of the search sets are optional, you need not check them for this exercise, but their functionality is explained below: 
+
+_Organism (optional):_ You could enter the name of the organism, however the program identifies the organism on it’s own. 
+
+_Exclude (optional):_ This option allows you to exclude identifiers with XM (predicted mRNA models) and XP (predicted protein models) as well as other samples from your query. Sequences associated with these identifiers are usually associated with incomplete data or data that come from sequencing only without associated biological information. Excluding these identifiers will make the query search quicker. 
+
+_Entrez query (optional):_ This option allows you to restrict your search to a subset of entries.
+
+_Task_ - Run a blastn and wait for the results in the preceding page and answer the following questions:
+
+2. What is the primary citation for the BLAST program?  Hint: Look in the BLAST header report.
+
+3. How many sequences are there in the database that was used for your search? Hint: All this information is there in the header report under Databases.
+
+4. What does the color code on the graphical interface represent?.
+
+5. What is the bit score, E-value and query coverage values of the first ten hits of the BLAST results?
+
+6. There are some entries with significant E-values (low E-values). Are these all best matches to the entire query sequence? How would you pick the best match between the query and subject? For this it would help you to give an example of the best match and one that may not be a good match, in spite of a low E-value. Justify your answers.
+
+7. How would you identify a closely related species to your query sequence?
+
+## __Part C: Using BLASTP to identify repeats__
+
+The next set of questions demonstrates how repeating characters in a sequence (such as repeating patterns of amino acids) can affect the results of a database search.
+
+_Task_ - Retrieve the FASTA formatted sequence for the protein CAC40682.1 from NCBI and paste it below. 
+
+1. What organism is this sequence from? How long is the sequence?
+
+2. Does anything stand out about this sequence when you look at it?
+
+3. Run a BLASTP search of CAC40682.1 using the “Reference Proteins” database and set organism to “_Drosophila melanogaster_”. Can you identify the conserved domains? 
+
+4. What database is associated with the annotations? Hint: Look at the conserved domains graphic and click on it to identify the database from where the annotation is imported. Loot [here](https://www.ncbi.nlm.nih.gov/refseq/about/nonredundantproteins/) for some hints.
+
+5. What is the best hit (the first match listed) and what is the E-value?
+
+6. Look at the alignment (scroll down). Which amino acid is aligned most frequently? (You can answer this by just looking at the alignment).
+
+7. Using the same query sequence for BLASTP, set the database to “Reference Proteins” and the organism to “Drosophila melanogaster”. This time, turn on “Filter Low Complexity Regions” under “Algorithm Parameters”. Did you find a homolog in _Drosophila melanogaster_?
+
+8. Based on results from the previous question (1-5)s, do you think this protein has a homolog in _Drosophila melanogaster_? Explain why or why not. 
+
+# __Introduction to standalone BLAST__
 
 ---

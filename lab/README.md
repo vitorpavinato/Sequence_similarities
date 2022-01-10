@@ -100,7 +100,6 @@ Some important keywords to remember:
 - Subject refers to the database you are going to search for similarities (nr/nt, RefSeq etc);
 - nr/nt refers to the not curated nucleotide collection;
 - RefSeq refer to the collection of reference sequences (many flavors);
----
 
 # __Introduction to BLAST__
 

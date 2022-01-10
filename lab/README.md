@@ -1,21 +1,36 @@
-# __Lab 1: Sequence similarity search__
+## __Lab 1: Introduction to BLAST (Basic Local Alignment Search Tool)__
 
 ## __How to use this material:__
 
-First you need to have a copy of this repository in your computer.
-The desirable way to do it is using Git (I am using this exercise to introduce Git to those that are not familiar with it).
-Open the terminal, navigate to a desired folder...for example Documents/.
+First you need to have a copy of [this](https://github.com/vitorpavinato/introBlast) repository in your computer. The desirable way to do it is using Git (I am using this exercise to introduce Git to those that are not familiar with it).
+
+In the repository page, find the green button with `<>` inside:
+
+![image 1](images/img1.png)
+
+A pop-up window will open. In that window, click in the button highlighted in the figure bellow:
+
+![image 2](images/img2.png)
+
+Find the terminal program in your OS (in Mac, you need to click on the `Launchpad`, then navigate to the `Other` folder).
+
+Open the terminal, navigate to a folder you choose to have a copy of the repository...for example Documents/.
 ```dotnetcli
 cd Documents/
 ```
-Copy and paste this command to make a copy of the repository in your computer:
+Type:
 ```dotnetcli
-git clone https://github.com/vitorpavinato/Sequence_similarities.git
+git clone 
+```
+
+Paste the repository address after git clone, like this:
+```dotnetcli
+git clone https://github.com/vitorpavinato/introBlast.git
 ```
 
 Then navigate inside the repository folder:
 ```dotnetcli
-cd Sequence_similarities
+cd introBlast
 ```
 
 The folder contains the following subfolders:
@@ -79,3 +94,5 @@ Some important keywords to remember:
 - Subject refers to the database you are going to search for similarities (nr/nt, RefSeq etc);
 - nr/nt refers to the not curated nucleotide collection;
 - RefSeq refer to the collection of reference sequences (many flavors);
+
+    

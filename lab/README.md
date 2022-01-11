@@ -226,6 +226,128 @@ _Task_ - Retrieve the FASTA formatted sequence for the protein CAC40682.1 from N
 
 8. Based on results from the previous question (1-5)s, do you think this protein has a homolog in _Drosophila melanogaster_? Explain why or why not. 
 
+# __Web-based BLAST search:__
+
+1. Use your favorite browser to navigate to NCBI’s BLAST web page at https://blast.ncbi.nlm.nih.gov/Blast.cgi.  Find our example sequence data from the directory I sent you.  The first search we’ll try is a basic BLAST of our example DNA sequence.  Choose the nucleotide BLAST option, and copy the sequence from the cDNA_test_seq.fa file.  
+
+	We’re not changing any parameters this time, but notice that we’re searching against the entire nucleotide collection (the ‘search set’), and using megablast to search for highly similar sequences.  Expand the “Algorithm parameters” section to see what else we could change if necessary.  Check the box to show results in a new window (so we can compare) and BLAST your sequence.  How many hits do you get?  Based on your results what do you think our sequence is?  What are the other sequences that have matched with ours?
+
+	Try changing the search program from ‘highly similar’ to ‘somewhat similar sequences’.  What does this do?  Do we see the same results?  What exactly does this change about the algorithm?
+
+2. Go back to the original BLAST page and choose the protein BLAST optioin.  Copy our amino acid sequence (which is a translation of the cDNA sequence we’re using) and BLAST using the default parameters.  How do these results compare with your nucleotide BLAST results?
+
+	Run this search again, but this time change the scoring matrix from BLOSUM62 to BLOSUM90 (similar to changing the search program the nucleotide BLAST from highly to somewhat similar).  How does this change your results?
+
 # __Introduction to standalone BLAST__
+
+1. Open your command line terminal and navigate to the repository folder containing the data for this lab: `introBlast/lab/data`. 
+
+2. The first thing we need to do is make a BLAST database from our sample genome so that its search algorithms can efficiently parse each sequence. We will use the command makeblastdb. But before we do it, we need to download the genome we are going to use as a subject (database).
+     - Go to [this](http://ftp.ensemblgenomes.org/pub/metazoa/release-52/fasta/aedes_aegypti_lvpagwg/dna/) page;
+     - Click on Aedes_aegypti_lvpagwg.AaegL5.dna_sm.toplevel.fa.gz to start downloading the file;
+     - Then move this file to `introBlast/lab/data` folder (you can move using your terminal by typing `mv path/to/the/file path/to/introBlastlab/data`);
+     - decompress the file.
+
+    Use the –h flag to look at the different options for this command.  To make BLAST retain the headers for our contigs we’ll use the –parse_seqids option, and we’ll tell BLAST that this is nucleotide sequence data using the –dbtype option. 
+
+We’ll run this using the command. 
+```dotnetcli
+makeblastdb -in Aedes_aegypti_lvpagwg.AaegL5.dna_sm.toplevel.fa -parse_seqids -dbtype nucl
+```
+
+List the contents of your directory (by typing `ls`).  What new files have appeared?
+
+3. The first comparison we’ll make here is to search for our cDNA sequence using the defaults, which will run a high similarity search.  Take a look at the defaults for each parameter using -help.
+
+Run this comparison using the following command:
+```dotnetcli
+blastn -query cDNA_test_seq.fa -db Aedes_aegypti_lvpagwg.AaegL5.dna_sm.toplevel.fa -out highly_similar_cDNA
+```
+Take a look at the output file that’s appeared in your directory (using a text editor like TextWrangler or Notepad or TextEdit; or using the terminal by typing `less <<output>>`). How many highly similar sequences are there in the _A. aegypti_ genome? How many different scaffolds does that cover?  What is a likely explanation for multiple hits here?
+
+4. Next we’ll run our search again using less stringent parameters that will equate to the ‘somewhat similar’ search option in the BLAST web interface.  For this search we’re going to increase the word size to 11, change the reward to 2 and the penalty to -3, change the open gap penalty to 5 and the gap extension penalty to 2.  Use the -h option to help you determine which options equate to these, and run your search again (remember to include an out file with a name that’s different from the one you saved the highly similar results to!).
+```dotnetcli
+blastn -query cDNA_test_seq.fa -db Aedes_aegypti_lvpagwg.AaegL5.dna_sm.toplevel.fa -word_size 11 -reward 2 -penalty -3 -gapopen 5 -gapextend 2 -out somewhat_similar_cDNA
+```
+Are there more or fewer results? Having run both, which search makes more sense in this situation?
+
+5. Finally, we’ll use the results from our searches to look at the evolution of our query and the subject hits.  To simplify, we’ll include the top hits with alignments longer than 600 base pairs from our highly similar search.
+
+    Rerun the highly similar blast search you performed earlier, but this time change the output format to include the subject id, subject start, subject end, alignment length, and subject sequence in a tabular file (example: -outfmt ‘6 option option option…’).  Also limit the number of hits per contig to 1 using the -max_hsps option.  I’ve included the output formatting options table below to help you:
+
+| outfmt | string | 0 | alignment view options |
+|--------|--------|---|------------------------|
+|        |        |   |0 = pairwise         |   
+|        |        |   |1 = query-anchored showing identities|
+|        |        |   |2 = query-anchored no identities,|
+|        |        |   |3 = flat query-anchored, show identities,|
+|        |        |   |4 = flat query-anchored, no identities,|
+|        |        |   |5 = XML Blast output,|
+|        |        |   |6 = tabular,|
+|        |        |   |7 = tabular with comment lines,|
+|        |        |   |8 = Text ASN.1,|
+|        |        |   |9 = Binary ASN.1|
+|        |        |   |10 = Comma-separated values|
+|        |        |   |11 = BLAST archive format (ASN.1)|
+|        |        |   |Options 6, 7, and 10 can be additionally configured to produce a custom format specified by space delimited format specifiers.|
+
+The supported format specifiers are:
+- qseqid means Query Seq-id
+- qgi means Query GI
+- qacc means Query accesion
+- sseqid means Subject Seq-id
+- sallseqid means All subject Seq-id(s), separated by a ';'
+- sgi means Subject GI
+- sallgi means All subject GIs
+- sacc means Subject accession
+- sallacc means All subject accessions
+- qstart means Start of alignment in query
+- qend means End of alignment in query
+- sstart means Start of alignment in subject
+- send means End of alignment in subject
+- qseq means Aligned part of query sequence
+- sseq means Aligned part of subject sequence
+- evalue means Expect value
+- bitscore means Bit score
+- score means Raw score
+- length means Alignment length
+- pident means Percentage of identical matches
+- nident means Number of identical matches
+- mismatch means Number of mismatches
+- positive means Number of positive-scoring matches
+- gapopen means Number of gap openings
+- gaps means Total number of gap
+- ppos means Percentage of positive-scoring matches
+- frames means Query and subject frames separated by a '/'
+- qframe means Query frame
+- sframe means Subject frame
+- btop means Blast traceback operations (BTOP)
+- staxids means unique Subject Taxonomy ID(s), separated by a ';'(in numerical order)
+- sscinames means unique Subject Scientific Name(s), separated by a ';'
+- scomnames means unique Subject Common Name(s), separated by a ';'
+- sblastnames means unique Subject Blast Name(s), separated by a ';' (in alphabetical order)
+- sskingdoms means unique Subject Super Kingdom(s), separated by a ';' (in alphabetical order)
+- stitle means Subject Title
+- salltitles means All Subject Title(s), separated by a '<>'
+- sstrand means Subject Strand
+- qcovs means Query Coverage Per Subject (for all HSPs)
+- qcovhsp means Query Coverage Per HSP
+- qcovus is a measure of Query Coverage that counts a position in a subject sequence for this measure only once. The second time the position is aligned to the query is not counted towards this measure.
+- When not provided, the default value is:
+- 'qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore', which is equivalent to the keyword 'std'
+
+The solutions for the above question is:
+```dotnetcli
+blastn -query cDNA_test_seq.fa -db Aedes_aegypti_lvpagwg.AaegL5.dna_sm.toplevel.fa -outfmt '6 sseqid sstart send length  sseq' -max_hsps 1 -out highly_similar_cDNA_2
+```
+
+6. Next we’re going to manually manipulate our results in order to provide the sequences to an aligner (Note: normally this would all be done via command line for efficiency, so if you do this in real life I highly recommend picking up the basics of file manipulation to make your life much, much easier).  Open up your results file and delete any hit shorter than 600 base pairs.  Reformat to fasta format.  Finally, open up your query sequence and copy that to your reformatted results file as well.  Save this as a new file with the ‘.fa’ extension.
+    
+    Open up the web-based alignment program Clustal Omega at https://www.ebi.ac.uk/Tools/msa/clustalo/ and enter your input sequences from the file you just created.  Remember to change the sequence type option from protein to dna.  Any of the output options are fine, as we’re just using their online services.  Submit your job.
+
+    After your alignment is finished you could export it for further analysis, but for now we’ll take a look at the tree produced using a neighbor-joining algorithm (“Phylogeny” tab at the top).  What can you infer from this tree about the copies of our gene?
+
+7. Celebrate- you’re a BLAST master!
+
 
 ---

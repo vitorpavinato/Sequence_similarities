@@ -15,9 +15,31 @@ Make sure you tick all items in the __TO DO__ list below before the class on Jan
     - [ ] Bring your questions to the class, so we can discuss them before the activities.
 - [ ] (Optional) read "BLAST: a critical guide" (provided in the `docs/` folder).
 
-## __How to install Git on Windows__
+## __How to install Git__
 
+__For Windows__
 Please follow the instructions found [here](https://git-scm.com/download/win) for the __Standalone Installer__. Make sure git is in your PATH (which means you can access it by typing git in your terminal). [This](https://medium.com/devops-with-valentine/2021-how-to-install-git-on-windows-10-step-by-step-guide-1c9db500e734) tutorial might help you install git on Windows and make it "visible" to the terminal app (you can skip step 2 in the git installation guide).
+
+__Mac and Linux:__
+Mac and Linux OS's have it natively install. Just to make sure you have it, type:
+```dotnetcli
+which git
+```
+You should have something like this if git is already installed in your computer:
+```dotnetcli
+/usr/bin/git
+```
+
+__For Linux:__
+If you, for some reason, don't have it installed, or if you want to have a recent version of git, you can install it on Ubuntu (Linux) by typing:
+```dotnetcli
+sudo apt-get install git
+```
+__For Mac:__
+If your macOS doesn't have git, you can install via Homebrew (see instructions below on how to install Homebrew in Mac). After you have Homebrew installed, open another terminal window and type:
+```dotnetcli
+brew install git
+```
 
 ## __How to install the standalone BLAST__ 
 

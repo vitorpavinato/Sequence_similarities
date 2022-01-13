@@ -15,6 +15,8 @@ Make sure you tick all items in the __TO DO__ list below before the class on Jan
     - [ ] Bring your questions to the class, so we can discuss them before the activities.
 - [ ] (Optional) read "BLAST: a critical guide" (provided in the `docs/` folder).
 
+I noticed it might be helpful to know some useful commands to use in the terminal (_e.g._ to navigate between folders, to list the folders content). I included a short list of useful bash and git commands in the `resources/` folder for mac/Linux and for windows.
+
 ## __How to install Git__
 
 __For Windows__
@@ -40,6 +42,8 @@ If your macOS doesn't have git, you can install via Homebrew (see instructions b
 ```dotnetcli
 brew install git
 ```
+
+You can also install git when you install `xcode command line tools`. [Here](https://www.freecodecamp.org/news/install-xcode-command-line-tools/) you can find a short tutorial on how to install it.
 
 ## __How to install the standalone BLAST__ 
 

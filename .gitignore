@@ -1,7 +1,11 @@
 roadmap.md
 .DS_Store
 */.DS_Store
-docs/introBlast_lab.key
+docs/Altschul_etal_1990.pdf
+docs/blast_a_critical_guide.pdf
+lab/doc/introBlast_lab.key
 lab/data/Aedes_aegypti_lvpagwg.AaegL5.*
 lab/data/*_similar_*
 lab/homework/*
+lecture/doc/introBlast_lecture.key
+lecture/doc/introBlast_lecture.pptx
